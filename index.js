@@ -13,9 +13,9 @@ let configuration = {
     statusDatabasePath : path.join(__dirname, "persist", "workflow-status.db")
 }
 
-fs.mkdirSync(uploadFolder, { recursive: true })
-fs.mkdirSync(resultFolder, { recursive: true })
-fs.mkdirSync(hocrTmpFolder, { recursive: true })
+fs.mkdirSync(configuration.uploadFolder, { recursive: true })
+fs.mkdirSync(configuration.resultFolder, { recursive: true })
+fs.mkdirSync(configuration.hocrTmpFolder, { recursive: true })
 
 new Database(configuration.statusDatabasePath).exec(`CREATE TABLE IF NOT EXISTS workflow (
     path TEXT UNIQUE NOT NULL,

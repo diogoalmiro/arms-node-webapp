@@ -10,6 +10,7 @@ block head
             let a = document.createElement("a");
             a.innerText = "Live"
             a.href = `/worker-component/tmp/${filename.replace(/\.zip$/,'')}/index.html`
+            p.append(" ")
             p.appendChild(a)
         })
 

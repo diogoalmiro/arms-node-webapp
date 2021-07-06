@@ -36,7 +36,8 @@ WORKDIR ../../../
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
-    PORT=8005
+    PORT=8005 \
+    DEBUG=webfocus:*
 
 EXPOSE 8005
 

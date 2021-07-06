@@ -1,0 +1,93 @@
+extends /layouts/main
+
+block head
+    script(src="/util/pagination.js")
+    script(src="/util/submit-json.js") 
+    script.
+        let uploading = 0;
+        addEventListener("dragover", ev => ev.preventDefault())
+        addEventListener("drop", ev => {
+            ev.preventDefault();
+            let status = document.getElementById("status");
+            
+            let list = document.getElementById("files");            
+            let files = ev.dataTransfer.files
+            for(let i = 0; i < files.length; i++){
+                file = files[i];
+                if( file.type != "image/tiff" ) continue;
+                uploading++;
+                setInfo(`Inserting ${uploading > 1 ? uploading+ ' files' : file.name} on queue.`);
+                fetch(apibaseurl+'?filename='+file.name, {
+                    method: "post",
+                    body: file
+                }).then(r => {
+                    uploading--;
+                    if(r.ok){
+                        if(uploading == 0) setHide();
+                        addFile(file.name)
+                    }
+                    else{
+                        r.json().then(obj => {
+                            setError(obj.error)
+                        })
+                    }
+                })
+                console.log(URL.createObjectURL(file))
+
+            }
+        })
+
+        window.onbeforeunload = function() {
+            if(uploading > 0){
+                return `There are ${uploading} files pending to be inserted. Are you sure?`;
+            }
+        }
+
+        function onDelete(v, form){
+            if( !v.error ) {
+                let toRem = form.closest(".filecard");
+                toRem.parentNode.removeChild(toRem);
+            }
+        }
+
+        function addFile(filename){
+            let parent = document.querySelector("#files"); 
+            let template = parent.querySelector("template");
+            let templateInstance = document.importNode(template.content, true);
+            templateInstance.querySelectorAll("[data-pagination-map=filename]").forEach(e => e.innerText = filename)
+            parent.insertBefore(templateInstance, parent.firstChild)
+        }
+        function setInfo(text){
+            let pre = document.querySelector("#status")
+            pre.textContent = text;
+            pre.classList.remove("d-none");
+            pre.classList.remove("alert-danger");
+            pre.classList.add("alert-info");
+        }
+        function setError(text){
+            let pre = document.querySelector("#status")
+            pre.textContent = text;
+            pre.classList.remove("d-none");
+            pre.classList.add("alert-danger");
+            pre.classList.remove("alert-info");
+        }
+        function setHide(){
+            let pre = document.querySelector("#status")
+            pre.textContent = "";
+            pre.classList.add("d-none");
+        }
+
+
+block main 
+    h1 Drag & Drop tif files to here.
+    pre#status.alert.d-none
+    #files(data-pagination-url=apibaseurl)
+        template
+            .border.p-3.m-1.d-inline-flex.align-items-center.filecard
+                b(data-pagination-map="filename").mx-2
+                form(action=apibaseurl, method="put",data-submit-cb="void").mx-2
+                    textarea(hidden="hidden",data-pagination-map="filename",name="filename")
+                    input.btn.btn-warning(type="submit", value="Rerun OCR").mx-2
+                form(action=apibaseurl, method="delete",data-submit-cb="onDelete")
+                    textarea(hidden="hidden",data-pagination-map="filename",name="filename")
+                    input.btn.btn-danger(type="submit", value="Delete")

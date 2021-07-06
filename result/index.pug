@@ -1,0 +1,20 @@
+extends /layouts/main
+
+block head 
+    script(src="/util/pagination.js")
+    script.
+        addEventListener("PaginationAddedEntry", (e) => {
+            let filename = e.detail.data;
+            if( !filename.match(/\.zip$/) ) return;
+            let p = e.detail.element;
+            let a = document.createElement("a");
+            a.innerText = "Live"
+            a.href = `/worker-component/tmp/${filename.replace(/\.zip$/,'')}/index.html`
+            p.appendChild(a)
+        })
+
+block main 
+    div(data-pagination-url=apibaseurl)
+        template
+            p
+                a(data-pagination-href="#{}", data-pagination-map)

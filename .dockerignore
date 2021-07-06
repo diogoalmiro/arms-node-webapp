@@ -1,0 +1,4 @@
+Dockerfile
+persist/
+node_modules/
+worker/

@@ -1,0 +1,45 @@
+extends /layouts/main
+
+block head 
+    script(src="/util/pagination.js")
+    script.
+        let ev = new EventSource('/api/worker-component/');
+
+        ev.addEventListener("workflow", m => {
+            // database updates
+            location.reload();
+            
+        })
+        const getLang = () => navigator.language || 'en-GB'
+        let intl = new Intl.DateTimeFormat(getLang(), { dateStyle: 'short', timeStyle: 'short' });
+
+        addEventListener("PaginationAddedEntry", (e) => {
+            let el = e.detail.element;
+
+            el.querySelectorAll('.date').forEach( e => e.textContent = !e.textContent ? '' : intl.format(new Date(e.textContent + ' UTC')))
+            el.querySelectorAll('[data-pagination-map="ocr_stdout"]').forEach(e => e.textContent = e.textContent.split('\n').filter(l => l.trim().length > 0).slice(-1))
+        })
+block main
+    table.table.table-striped
+        thead 
+            tr 
+                td Filename
+                td Queued
+                td Started OCR
+                td Progress OCR
+                td Concluded OCR
+                td Started Archive
+                td Progress Archive
+                td Concluded Archive
+        tbody(data-pagination-url=apibaseurl,data-pagination-step=5000)
+            template
+                tr
+                    td(data-pagination-map="filename")
+                    td.date(data-pagination-map="#{queued}")
+                    td.date(data-pagination-map="#{ocr_started}")
+                    td(data-pagination-map="ocr_stdout")
+                    td.date(data-pagination-map="#{ocr_concluded}")
+                    td.date(data-pagination-map="#{archive_started}")
+                    td(data-pagination-map="#{archive_progress}")
+                    td.date(data-pagination-map="#{archive_concluded}")
+                

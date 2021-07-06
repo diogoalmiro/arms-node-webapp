@@ -1,0 +1,16 @@
+extends /layouts/main
+
+block head
+    script(src="/util/pagination.js") 
+    script.
+        const es = new EventSource(apibaseurl);
+
+        es.addEventListener('workflow', (m) => {
+            let status = JSON.parse(m.data);
+            let pre = document.createElement("pre");
+            pre.innerText = JSON.stringify(status, null, '   ');
+            document.getElementById("events").append(pre);
+        })
+
+block main
+    div#events

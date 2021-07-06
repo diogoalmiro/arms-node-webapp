@@ -1,0 +1,58 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="pages_html/page-style.css")
+        title= name
+        style.
+            ul {
+                display: flex;
+                flex-wrap: wrap;
+                list-style-type: none;
+                padding: 1em;
+                margin: 0;
+            }
+
+            li {
+                width: 150px;
+                height: 200px;
+                padding: 0.2em;
+                text-align: center;
+                position: relative;
+                margin: 0 0 1em;
+            }
+
+            img {
+                display: block;
+                max-height: 90%;
+                max-width: 100%;
+                margin: auto;
+            }
+
+            li a span {
+                display: block;
+                color: var(--text-color);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+
+            body {
+                grid-template:
+                "header" var(--header-size)
+                "main" 1fr;
+            }
+
+    body
+        header
+            div#left: span= name
+        main
+            ul
+                - for(let i = 0; i < pages; i++){
+                    li: a(href=`pages_html/page_${i}.html`)
+                        img(src=`pages_thumbnail/page_${i}.png`)
+                        span !{i+1}
+                - }

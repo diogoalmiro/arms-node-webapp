@@ -40,6 +40,7 @@ ENV LC_ALL=C.UTF-8 \
 
 EXPOSE 8005
 
+CMD [ "npm", "start" ]
 
 # DEBUG IN CONTAINER (EXPOSE  9229)
 #RUN apt-get install -y sqlite3 vim

@@ -39,6 +39,7 @@ ENV LC_ALL=C.UTF-8 \
     PORT=8005 \
     DEBUG=webfocus:*
 
+VOLUME /home/app/perist/
 EXPOSE 8005
 
 CMD [ "npm", "start" ]

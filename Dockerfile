@@ -31,6 +31,8 @@ WORKDIR worker-threaded/workflow/exec/
 RUN python3 -m venv env
 RUN env/bin/pip3 install --upgrade pip && \
     env/bin/pip3 install opencv-python && \
+	env/bin/pip3 install PyPDF2 && \
+    env/bin/pip3 install pdf2image && \
     env/bin/pip3 install -r ../requirements.txt
 WORKDIR ../../../
 

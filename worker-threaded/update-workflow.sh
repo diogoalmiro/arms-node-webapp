@@ -1,5 +1,5 @@
-wget https://github.com/joaovizoso/arms_docker/archive/refs/heads/main.zip
-unzip main.zip
-rm main.zip
-mv arms_docker-main/workflow workflow
-rm -r arms_docker-main
+wget https://github.com/joaovizoso/arms_docker/archive/ea8374f7ac9810783afafd03d8b73c41d43228be.zip
+unzip ea8374f7ac9810783afafd03d8b73c41d43228be.zip
+rm ea8374f7ac9810783afafd03d8b73c41d43228be.zip
+mv arms_docker-ea8374f7ac9810783afafd03d8b73c41d43228be/workflow workflow
+rm -r arms_docker-ea8374f7ac9810783afafd03d8b73c41d43228be
